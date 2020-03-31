@@ -1,87 +1,73 @@
-
+import math
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+X = np.array([[0, 0, 1],
+              [0, 1, 1],
+              [1, 0, 1],
+              [1, 1, 1]])
 
-def read_file(filename):
-    file_object = open(filename)
-    data = []
+# print(X)
 
-    while True:
-        line = file_object.readline()
+my_lst = np.array(range(10))
+print(my_lst)
 
-        if not line:
-            break
+init_lst = np.zeros(len(my_lst))
+print(init_lst)
 
-        elif line[0].isdigit():
-            digit = line.split(',')
-            label = int(digit[0])
-            pixels = list(map(int, digit[1:]))
-            data.append((label, pixels))
-
-    file_object.close()
-    return data
+init_lst = my_lst
+print(init_lst)
 
 
-# data = read_file('assignment5.csv')
-# print(data[0][1])
+# weights1 = np.random.rand(X.shape[1], 40)
+# print(weights1)
 
-# mnist = []
-# for _, digit in enumerate(data, 1):
-#     mnist.append(Mnist(digit[0], digit[1]))
+# weights2 = np.random.rand(4, 1)
+# print(weights2)
 
-# print(mnist)
+# prev_layer_size = 50
+# good_range = 1.0 / math.sqrt(prev_layer_size + 1)
+# print(good_range)
 
-# data = pd.read_csv('assignment5.csv', delimiter=',', skiprows=[0])
-df = pd.read_csv('assignment5.csv', delimiter=',')
-# print(data)
-# print(data[1])
-data = df.values.tolist()
-# print(data[0])
-# print(len(data))
+# tragets = np.zeros(10)
+# print(tragets)
 
-# mnist = []
-# for _, digit in enumerate(data, 1):
-#     mnist.append(Mnist(digit[0], digit[1:]))
+# s = pd.Series(list(range(10)))
+# tragets = pd.get_dummies(s)
+# # print(tragets)
 
-# data = np.loadtxt('assignment5.csv', delimiter=',', skiprows=1)
-# data = np.genfromtxt('assignment5.csv', delimiter=',', skip_header=1)
-# print(data)
-
-# img = data[40][1:]
-# img = data[3000][1]
-# print(img)
-# print(len(img))
-
-# image_reshape = np.reshape(img, (28, 28))
-# print(image_reshape)
-# plt.imshow(img, cmap="Greys")
-# plt.show()
+# examples = np.array(tragets.values.tolist())
+# print(examples)
+# # print(examples[5])
 
 
-# data = list(range(1, 101))
-# print(data)
+# def one_hot_encoding(examples):
+#     targets = {}
 
-x = int(round(len(data) * 0.7))
-y = int(round(len(data) * 0.1))
-z = int(round(len(data) * 0.2))
-print(x)
-print(y)
-print(z)
-# print(x+y+z)
+#     for label, one_hot in enumerate(examples):
+#         targets[label] = one_hot
 
-# count = 0
-# for i in range(int(round(len(data) * 0.7))):
-#     data[i] = 1
-#     count += 1
-# # print(data)
+#     return targets
 
-# for i in range(count, count+int(round(len(data) * 0.1))):
-#     data[i] = 0
-#     count += 1
-# # print(data)
 
-# for i in range(count, count+int(round(len(data) * 0.2))):
-#     data[i] = -1
-# print(data)
+# test = one_hot_encoding(examples)
+# print(test[5])
+# print(np.array(test))
+
+# for i, one_hot in enumerate(examples):
+#     print(i)
+#     print(one_hot)
+
+# hash = {}
+
+# for i, one_hot in enumerate(len(examples)):
+#     hash[i] = one_hot
+
+# print(hash[0])
+
+# def possible_moves(self):
+#         return list(self.moves.keys())
+
+#     def get_move(self, key):
+#         return self.moves.pop(key)
