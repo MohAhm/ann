@@ -1,8 +1,8 @@
 
 class Digit:
-    def __init__(self, one_hot, pixels):
-        self.one_hot = one_hot
-        self.pixels = pixels
+    def __init__(self, targets, inputs):
+        self.targets = targets
+        self.inputs = inputs
 
 
 class Mnist:

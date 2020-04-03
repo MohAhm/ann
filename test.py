@@ -2,6 +2,7 @@ import math
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from typing import Iterable, Any
 
 X = np.array([[0, 0, 1],
               [0, 1, 1],
@@ -10,14 +11,59 @@ X = np.array([[0, 0, 1],
 
 # print(X)
 
-my_lst = np.array(range(10))
-print(my_lst)
+init_range = 0.1
+biases = np.random.uniform(-init_range, init_range, size=1)
+print(biases)
 
-init_lst = np.zeros(len(my_lst))
-print(init_lst)
 
-init_lst = my_lst
-print(init_lst)
+# my_lst = np.array(range(10))
+# print(my_lst)
+
+
+# def signal_last(lst):
+#     iterable = iter(lst)
+#     ret_var = next(iterable)
+
+#     for val in iterable:
+#         yield False, ret_var
+#         ret_var = val
+
+#     yield True, ret_var
+
+
+# for is_last_element, var in signal_last(range(len(my_lst) - 1)):
+#     if is_last_element:
+#         print(10)
+#     else:
+#         print(var)
+
+
+# for i, is_last_element in signal_last(range(len(my_lst) - 1)):
+#     if is_last_element:
+#         print(10)
+#     else:
+#         print(i)
+
+# for is_last_element, var in signal_last(range(my_lst)):
+#     if is_last_element:
+#         print(10)
+#     else:
+#         print(var)
+
+
+# ok = len(my_lst) - 1
+# for i in range(ok):
+#     if i == ok-1:
+#         print(10)
+#     else:
+#         print(my_lst[i])
+
+
+# init_lst = np.zeros(len(my_lst))
+# print(init_lst)
+
+# init_lst = my_lst
+# print(init_lst)
 
 
 # weights1 = np.random.rand(X.shape[1], 40)

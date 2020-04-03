@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
 from mnist import Mnist
 from ann import ANN
 
@@ -19,26 +20,33 @@ def main():
     # print(len(targets))
 
     mnist = Mnist(inputs, targets)
-    training_set, validation_set, testing_set = mnist.load_datasets()
+    train_data, validation_data, test_data = mnist.load_datasets()
+    print("Data loaded ...")
 
-    # print(len(training_set))
-    # print(len(validation_set))
-    # print(len(testing_set))
-    # print(training_set[0].input())
-    # print(training_set[0].target())
+    # print(len(train_data))
+    # print(len(validation_data))
+    # print(len(test_data))
+    # print(train_data[0].input())
+    # print(train_data[0].target())
 
     input_size = 784
     hidden_layer_size = 50
     output_size = 10
-    n_epochs = 5
+    n_epochs = 2
 
-    ann = ANN([input_size, hidden_layer_size, hidden_layer_size, output_size])
+    ann = ANN([input_size, hidden_layer_size, output_size])
     # print(ann.layers[0].output)
     # print(ann.layers[3].weights)
 
-    for i in range(len(validation_set)):
-        print(ann.test(validation_set[i]))
-        # ann.test(validation_set[i])
+    ann.train(train_data, n_epochs)
+    for i in range(len(validation_data)):
+        print(ann.validate(validation_data[i].inputs))
+
+    # print(validation_data[-1].targets)
+
+    # for i in range(len(validation_data)):
+    #     print(ann.test(validation_data[i].inputs))
+    # ann.test(validation_data[i])
 
 
 if __name__ == '__main__':
