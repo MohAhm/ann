@@ -1,119 +1,64 @@
-import math
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from typing import Iterable, Any
+from mnist import Mnist
 
-X = np.array([[0, 0, 1],
-              [0, 1, 1],
-              [1, 0, 1],
-              [1, 1, 1]])
-
-# print(X)
-
-init_range = 0.1
-biases = np.random.uniform(-init_range, init_range, size=1)
-print(biases)
+import collections
 
 
-# my_lst = np.array(range(10))
-# print(my_lst)
+df = pd.read_csv('assignment5.csv', delimiter=',')
+dataset = df.values.tolist()
+
+s = pd.Series(list(range(10)))
+dummy = pd.get_dummies(s)
+binaries = dummy.values.tolist()
 
 
-# def signal_last(lst):
-#     iterable = iter(lst)
-#     ret_var = next(iterable)
+mnist = Mnist(dataset, binaries)
+_, _, test_targets = mnist.load_targets()
 
-#     for val in iterable:
-#         yield False, ret_var
-#         ret_var = val
+t = np.transpose(test_targets)
 
-#     yield True, ret_var
+# print(t.shape[0])
+# print(t[5])
+# print(mnist.get_label(t[5]))
+# print(len(t))
 
+# a = []
+# for i in range(len(t)):
+#     a.append(mnist.get_label(t[i]))
 
-# for is_last_element, var in signal_last(range(len(my_lst) - 1)):
-#     if is_last_element:
-#         print(10)
-#     else:
-#         print(var)
+# print(len(a))
 
+occurrence = {}
+accuracy = {}
 
-# for i, is_last_element in signal_last(range(len(my_lst) - 1)):
-#     if is_last_element:
-#         print(10)
-#     else:
-#         print(i)
+# for i, n in enumerate(a):
+for i in range(t.shape[0]):
+    occurrence[mnist.get_label(t[i])] = occurrence.get(
+        mnist.get_label(t[i]), 0) + 1
 
-# for is_last_element, var in signal_last(range(my_lst)):
-#     if is_last_element:
-#         print(10)
-#     else:
-#         print(var)
+    if True:
+        accuracy[mnist.get_label(t[i])] = accuracy.get(
+            mnist.get_label(t[i]), 0) + 1
 
+# print(occurrence)
+# print(accuracy)
 
-# ok = len(my_lst) - 1
-# for i in range(ok):
-#     if i == ok-1:
-#         print(10)
-#     else:
-#         print(my_lst[i])
+occurrence = collections.OrderedDict(sorted(occurrence.items()))
+accuracy = collections.OrderedDict(sorted(accuracy.items()))
+print(occurrence)
+# print(accuracy[2])
 
+test = []
+for i in list(occurrence.keys()):
+    test.append((accuracy[i]/occurrence[i]) * 100)
 
-# init_lst = np.zeros(len(my_lst))
-# print(init_lst)
+print(test)
+print(list(occurrence.keys()))
 
-# init_lst = my_lst
-# print(init_lst)
+# occurrence = {}
 
+# for n in range(t.shape[0]):
+#     occurrence[mnist.get_label(t[n])] = occurrence.get(n, 0) + 1
 
-# weights1 = np.random.rand(X.shape[1], 40)
-# print(weights1)
-
-# weights2 = np.random.rand(4, 1)
-# print(weights2)
-
-# prev_layer_size = 50
-# good_range = 1.0 / math.sqrt(prev_layer_size + 1)
-# print(good_range)
-
-# tragets = np.zeros(10)
-# print(tragets)
-
-# s = pd.Series(list(range(10)))
-# tragets = pd.get_dummies(s)
-# # print(tragets)
-
-# examples = np.array(tragets.values.tolist())
-# print(examples)
-# # print(examples[5])
-
-
-# def one_hot_encoding(examples):
-#     targets = {}
-
-#     for label, one_hot in enumerate(examples):
-#         targets[label] = one_hot
-
-#     return targets
-
-
-# test = one_hot_encoding(examples)
-# print(test[5])
-# print(np.array(test))
-
-# for i, one_hot in enumerate(examples):
-#     print(i)
-#     print(one_hot)
-
-# hash = {}
-
-# for i, one_hot in enumerate(len(examples)):
-#     hash[i] = one_hot
-
-# print(hash[0])
-
-# def possible_moves(self):
-#         return list(self.moves.keys())
-
-#     def get_move(self, key):
-#         return self.moves.pop(key)
+# print(occurrence)

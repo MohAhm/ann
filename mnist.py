@@ -1,42 +1,63 @@
-
-class Digit:
-    def __init__(self, targets, inputs):
-        self.targets = targets
-        self.inputs = inputs
+import numpy as np
 
 
 class Mnist:
-    def __init__(self, inputs, targets):
-        self.train = []
-        self.test = []
-        self.validation = []
+    def __init__(self, dataset, one_hot):
+        self.train_inputs = []
+        self.validation_inputs = []
+        self.test_inputs = []
 
-        one_hot = one_hot_encoding(targets)
-        total_size = len(inputs)
+        self.train_targets = []
+        self.validation_targets = []
+        self.test_targets = []
+
+        self.one_hot = {}
+        self.one_hot_encoding(one_hot)
+
+        total_size = len(dataset)
         set_count = 0
-        # training set (70%)
+
+        # Training set (70%)
         for i in range(int(round(total_size * 0.7))):
-            self.train.append(Digit(one_hot[inputs[i][0]], inputs[i][1:]))
+            self.train_inputs.append(dataset[i][1:])
+            self.train_targets.append(self.one_hot[dataset[i][0]])
             set_count += 1
 
-        # validation set (10%)
+        # Validation set (10%)
         for i in range(set_count, set_count + int(round(total_size * 0.1))):
-            self.validation.append(
-                Digit(one_hot[inputs[i][0]], inputs[i][1:]))
+            self.validation_inputs.append(dataset[i][1:])
+            self.validation_targets.append(self.one_hot[dataset[i][0]])
             set_count += 1
 
-        # testing set (20%)
+        # Testing set (20%)
         for i in range(set_count, set_count + int(round(total_size * 0.2))):
-            self.test.append(Digit(one_hot[inputs[i][0]], inputs[i][1:]))
+            self.test_inputs.append(dataset[i][1:])
+            self.test_targets.append(self.one_hot[dataset[i][0]])
 
-    def load_datasets(self):
-        return self.train, self.validation, self.test
+        self.train_inputs = np.array(self.train_inputs, dtype='f')
+        self.validation_inputs = np.array(self.validation_inputs, dtype='f')
+        self.test_inputs = np.array(self.test_inputs, dtype='f')
 
+        self.train_targets = np.array(self.train_targets, dtype='f')
+        self.validation_targets = np.array(self.validation_targets, dtype='f')
+        self.test_targets = np.array(self.test_targets, dtype='f')
 
-def one_hot_encoding(targets):
-    one_hot = {}
+    def load_inputs(self):
+        # Transpose the data, turn row vector into column vector, and also 
+        # Scale the data to make the values numerically stable (between 0 and 1)
+        return self.train_inputs.T / 255, self.validation_inputs.T / 255, self.test_inputs.T / 255
 
-    for i, binary in enumerate(targets):
-        one_hot[i] = binary
+    def load_targets(self):
+        # Transpose the data, turn row vector into column vector
+        return self.train_targets.T, self.validation_targets.T, self.test_targets.T
 
-    return one_hot
+    def one_hot_encoding(self, one_hot):
+        # Map the labels to one hot representations 
+        for i, n in enumerate(one_hot):
+            self.one_hot[i] = n
+
+    def get_label(self, binary):
+        # Get the label of the one hot
+        for label, value in self.one_hot.items():
+            if np.array_equal(value, binary):
+                return label

@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from mnist import Mnist
-from ann import ANN
+from neural_network import ANN
 
 
 def main():
@@ -11,42 +11,53 @@ def main():
 
     # Set Data ...
     df = pd.read_csv('assignment5.csv', delimiter=',')
-    inputs = np.array(df.values.tolist())
-    # print(inputs)
+    dataset = df.values.tolist()
+    # print(dataset)
 
     s = pd.Series(list(range(10)))
-    one_hot = pd.get_dummies(s)     # One-hot code
-    targets = np.array(one_hot.values.tolist())
-    # print(len(targets))
+    dummy = pd.get_dummies(s)
+    one_hot = dummy.values.tolist()
+    # print(one_hot[0])
 
-    mnist = Mnist(inputs, targets)
-    train_data, validation_data, test_data = mnist.load_datasets()
+    mnist = Mnist(dataset, one_hot)
+    train_inputs, validation_inputs, test_inputs = mnist.load_inputs()
+    train_targets, validation_targets, test_targets = mnist.load_targets()
     print("Data loaded ...")
-
-    # print(len(train_data))
-    # print(len(validation_data))
-    # print(len(test_data))
-    # print(train_data[0].input())
-    # print(train_data[0].target())
-
-    input_size = 784
+    # print(train_inputs[0])
+    
+    input_size = train_inputs.shape[0] # 784
+    output_size = train_targets.shape[0] #10
     hidden_layer_size = 50
-    output_size = 10
-    n_epochs = 2
 
-    ann = ANN([input_size, hidden_layer_size, output_size])
-    # print(ann.layers[0].output)
-    # print(ann.layers[3].weights)
+    ann = ANN([input_size, hidden_layer_size, hidden_layer_size, output_size])
 
-    ann.train(train_data, n_epochs)
-    for i in range(len(validation_data)):
-        print(ann.validate(validation_data[i].inputs))
+    n_epochs = 150
 
-    # print(validation_data[-1].targets)
+    validation_accuracy, epochs = ann.learning(
+        train_inputs, train_targets, validation_inputs, validation_targets, n_epochs)
+    
+    test_accuracy, classes_accuracy = ann.evaluate(
+        test_inputs, test_targets, mnist)
 
-    # for i in range(len(validation_data)):
-    #     print(ann.test(validation_data[i].inputs))
-    # ann.test(validation_data[i])
+    # for i in range(10):
+    #     print('Class %i: %f' % (i, classes_accuracy[i]))
+
+    print('Test Accuracy:', test_accuracy)
+
+    plt.figure(1)
+    plt.plot(epochs, validation_accuracy)
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.grid()
+    plt.title('Validation Accuracy')
+
+    plt.figure(2) 
+    y_pos = np.arange(len(range(10)))
+    plt.bar(y_pos, classes_accuracy)
+    plt.xticks(y_pos, range(10))
+    plt.ylabel('Accuracy')
+    plt.title('Accuracy for each Class')
+    plt.show()
 
 
 if __name__ == '__main__':
