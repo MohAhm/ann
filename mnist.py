@@ -43,7 +43,7 @@ class Mnist:
         self.test_targets = np.array(self.test_targets, dtype='f')
 
     def load_inputs(self):
-        # Transpose the data, turn row vector into column vector, and also 
+        # Transpose the data, turn row vector into column vector, and also
         # Scale the data to make the values numerically stable (between 0 and 1)
         return self.train_inputs.T / 255, self.validation_inputs.T / 255, self.test_inputs.T / 255
 
@@ -52,12 +52,20 @@ class Mnist:
         return self.train_targets.T, self.validation_targets.T, self.test_targets.T
 
     def one_hot_encoding(self, one_hot):
-        # Map the labels to one hot representations 
+        # Map the labels to one hot representations
         for i, n in enumerate(one_hot):
             self.one_hot[i] = n
 
-    def get_label(self, binary):
+    def get_label(self, val):
         # Get the label of the one hot
         for label, value in self.one_hot.items():
-            if np.array_equal(value, binary):
+            if np.array_equal(value, val):
                 return label
+
+    def get_pred_label(self, val):
+        # The rest to 0
+        val[val < val[np.argmax(val)]] = 0
+        # Set the element with highest probability to 1
+        val[np.argmax(val)] = 1
+
+        return self.get_label(val)

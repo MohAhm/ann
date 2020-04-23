@@ -24,25 +24,27 @@ def main():
     train_targets, validation_targets, test_targets = mnist.load_targets()
     print("Data loaded ...")
     # print(train_inputs[0])
-    
-    input_size = train_inputs.shape[0] # 784
-    output_size = train_targets.shape[0] #10
+
+    input_size = train_inputs.shape[0]  # 784
+    output_size = train_targets.shape[0]  # 10
     hidden_layer_size = 50
 
     ann = ANN([input_size, hidden_layer_size, hidden_layer_size, output_size])
 
     n_epochs = 150
 
+    # Learn ...
     validation_accuracy, epochs = ann.learning(
         train_inputs, train_targets, validation_inputs, validation_targets, n_epochs)
-    
+
+    # Test ...
     test_accuracy, classes_accuracy = ann.evaluate(
         test_inputs, test_targets, mnist)
 
     # for i in range(10):
     #     print('Class %i: %f' % (i, classes_accuracy[i]))
 
-    print('Test Accuracy:', test_accuracy)
+    print('Test accuracy:', test_accuracy)
 
     plt.figure(1)
     plt.plot(epochs, validation_accuracy)
@@ -51,7 +53,7 @@ def main():
     plt.grid()
     plt.title('Validation Accuracy')
 
-    plt.figure(2) 
+    plt.figure(2)
     y_pos = np.arange(len(range(10)))
     plt.bar(y_pos, classes_accuracy)
     plt.xticks(y_pos, range(10))

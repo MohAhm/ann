@@ -19,9 +19,21 @@ _, _, test_targets = mnist.load_targets()
 t = np.transpose(test_targets)
 
 # print(t.shape[0])
-# print(t[5])
-# print(mnist.get_label(t[5]))
+print(t[5])
+print(mnist.get_label(t[5]))
 # print(len(t))
+
+pred = np.array([-1.06110333, -1.4826326, 0.89433394, -2.17254261,
+                 1.51349373, -1.7455234, -2.20991499, 2.56358219, 1.16479826, 4.2443933])
+
+
+print(mnist.get_pred_label(pred))
+# pred[pred < pred[np.argmax(pred)]] = 0
+# pred[np.argmax(pred)] = 1
+# print(pred)
+# print(mnist.get_label(pred))
+
+# print(pred[np.argmax(pred)])
 
 # a = []
 # for i in range(len(t)):
@@ -44,17 +56,17 @@ for i in range(t.shape[0]):
 # print(occurrence)
 # print(accuracy)
 
-occurrence = collections.OrderedDict(sorted(occurrence.items()))
-accuracy = collections.OrderedDict(sorted(accuracy.items()))
-print(occurrence)
-# print(accuracy[2])
+# occurrence = collections.OrderedDict(sorted(occurrence.items()))
+# accuracy = collections.OrderedDict(sorted(accuracy.items()))
+# print(occurrence)
+# # print(accuracy[2])
 
-test = []
-for i in list(occurrence.keys()):
-    test.append((accuracy[i]/occurrence[i]) * 100)
+# test = []
+# for i in list(occurrence.keys()):
+#     test.append((accuracy[i]/occurrence[i]) * 100)
 
-print(test)
-print(list(occurrence.keys()))
+# print(test)
+# print(list(occurrence.keys()))
 
 # occurrence = {}
 
