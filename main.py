@@ -10,7 +10,7 @@ def main():
     """ EntryPoint """
 
     # Set Data ...
-    df = pd.read_csv('assignment5.csv', delimiter=',')
+    df = pd.read_csv('mnist.csv', delimiter=',')
     dataset = df.values.tolist()
     # print(dataset)
 
@@ -38,11 +38,7 @@ def main():
         train_inputs, train_targets, validation_inputs, validation_targets, n_epochs)
 
     # Test ...
-    test_accuracy, classes_accuracy = ann.evaluate(
-        test_inputs, test_targets, mnist)
-
-    # for i in range(10):
-    #     print('Class %i: %f' % (i, classes_accuracy[i]))
+    test_accuracy, classes_accuracy = ann.evaluate(test_inputs, test_targets, mnist)
 
     print('Test accuracy:', test_accuracy)
 

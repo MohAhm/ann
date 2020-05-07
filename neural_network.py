@@ -47,13 +47,11 @@ class ANN:
         self.activations[1] = self.relu(self.outputs[1])
 
         for i in range(2, l):
-            self.outputs[i] = np.dot(
-                self.weights[i], self.activations[i - 1]) + self.biases[i]
+            self.outputs[i] = np.dot(self.weights[i], self.activations[i - 1]) + self.biases[i]
             self.activations[i] = self.relu(self.outputs[i])
 
         # Calculate the activation of the output layer using softmax
-        self.outputs[l] = np.dot(
-            self.weights[l], self.activations[l - 1]) + self.biases[l]
+        self.outputs[l] = np.dot(self.weights[l], self.activations[l - 1]) + self.biases[l]
         self.activations[l] = self.softmax(self.outputs[l])
 
         return self.outputs[l]
@@ -68,28 +66,28 @@ class ANN:
         for i in range(1, l):
             self.derivatives['dA' + str(l - i)] = np.dot(
                 self.weights[l - i + 1].T, self.derivatives['dZ' + str(l - i + 1)])
+            
             self.derivatives['dZ' + str(l - i)] = self.derivatives['dA' + str(
                 l - i)] * self.relu_derivative(self.outputs[l - i])
 
+
         # Calculate the gradients of the weights and biases
         self.derivatives['dW1'] = np.dot(self.derivatives['dZ1'], inputs.T)
-        self.derivatives['dB1'] = np.sum(
-            self.derivatives['dZ1'], axis=1, keepdims=True)
+        self.derivatives['dB1'] = np.sum(self.derivatives['dZ1'], axis=1, keepdims=True)
 
         for i in range(2, self.n_layers):
             self.derivatives['dW' + str(i)] = np.dot(
                 self.derivatives['dZ' + str(i)], self.activations[i - 1].T)
+            
             self.derivatives['dB' + str(i)] = np.sum(
                 self.derivatives['dZ' + str(i)], axis=1, keepdims=True)
 
     def update_parameters(self):
         for i in range(1, self.n_layers):
             # Update weights
-            self.weights[i] = self.weights[i] - \
-                (self.learning_rate * self.derivatives['dW' + str(i)])
+            self.weights[i] = self.weights[i] - (self.learning_rate * self.derivatives['dW' + str(i)])
             # Update biases
-            self.biases[i] = self.biases[i] - \
-                (self.learning_rate * self.derivatives['dB' + str(i)])
+            self.biases[i] = self.biases[i] - (self.learning_rate * self.derivatives['dB' + str(i)])
 
     def learning(self, train_inputs, train_targets, validation_inputs, validation_targets, n_epochs):
         validation_accuracy = []
